@@ -24,7 +24,6 @@ import javax.inject.Inject;
 
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.apache.sling.commons.html.HtmlParser;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.ops4j.pax.exam.Configuration;
@@ -32,6 +31,7 @@ import org.ops4j.pax.exam.Option;
 import org.ops4j.pax.exam.junit.PaxExam;
 import org.ops4j.pax.exam.spi.reactors.ExamReactorStrategy;
 import org.ops4j.pax.exam.spi.reactors.PerClass;
+import org.ops4j.pax.exam.util.Filter;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -39,33 +39,32 @@ import static org.ops4j.pax.exam.cm.ConfigurationAdminOptions.newConfiguration;
 
 @RunWith(PaxExam.class)
 @ExamReactorStrategy(PerClass.class)
-public class TagsoupParserIT extends HtmlTestSupport {
+public class TagsoupHtmlParserIT extends HtmlTestSupport {
 
     @Inject
+    @Filter(value = "(&(dom=tagsoup)(sax=tagsoup))")
     private HtmlParser htmlParser;
 
     @Configuration
     public Option[] configuration() {
         return new Option[]{
             this.baseConfiguration(),
-            newConfiguration("org.apache.sling.commons.html.impl.HtmlParserImpl")
-                .put("properties", "foo=true")
+            newConfiguration("org.apache.sling.commons.html.internal.TagsoupHtmlParser")
+                .put("parser.properties", "foo=true")
                 .asOption(),
         };
     }
 
     @Test
-    @Ignore
     public void testHtmlParser() {
         assertNotNull(htmlParser);
     }
 
     @Test
-    @Ignore
     public void testConfiguration() throws IllegalAccessException {
-        @SuppressWarnings("unchecked") final Map<String, Boolean> features = (Map<String, Boolean>) FieldUtils.readDeclaredField(htmlParser, "features", true);
-        assertNotNull(features);
-        final Boolean foo = features.get("foo");
+        @SuppressWarnings("unchecked") final Map<String, Boolean> properties = (Map<String, Boolean>) FieldUtils.readDeclaredField(htmlParser, "properties", true);
+        assertNotNull(properties);
+        final Boolean foo = properties.get("foo");
         assertTrue(foo);
     }
 

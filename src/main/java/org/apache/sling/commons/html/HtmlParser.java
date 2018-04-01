@@ -26,26 +26,31 @@ import org.xml.sax.ContentHandler;
 import org.xml.sax.SAXException;
 
 /**
- * The html parser is a service to parse html and generate
- * SAX events or a Document out of the html.
- *
+ * The HTML parser is a service to parse HTML and generate
+ * SAX events or a Document out of the HTML.
  */
 public interface HtmlParser {
 
     /**
-     * Parse html and send sax events.
-     * @param stream The input stream
-     * @param encoding Encoding of the input stream, <code>null</code>for default encoding.
-     * @param ch Content handler receiving the SAX events. The content handler might also
-     *           implement the lexical handler interface.
+     * Parse HTML and send SAX events.
+     *
+     * @param inputStream    The input stream
+     * @param encoding       Encoding of the input stream, <code>null</code> for default encoding.
+     * @param contentHandler Content handler receiving the SAX events. The content handler might also
+     *                       implement the lexical handler interface.
+     * @throws SAXException Exception thrown when parsing fails.
      */
-    void parse(InputStream stream, String encoding, ContentHandler ch) throws SAXException;
+    void parse(InputStream inputStream, String encoding, ContentHandler contentHandler) throws SAXException;
 
     /**
-     * Parse html and return a DOM Document.
-     * @param The system id
-     * @param stream The input stream
-     * @param encoding Encoding of the input stream, <code>null</code>for default encoding.
+     * Parse HTML and return a DOM Document.
+     *
+     * @param systemId    The system id
+     * @param inputStream The input stream
+     * @param encoding    Encoding of the input stream, <code>null</code> for default encoding.
+     * @return A DOM Document built from parsed HTML or <code>null</code>
+     * @throws IOException Exception thrown when parsing fails.
      */
-    Document parse(String systemId, InputStream stream, String encoding) throws IOException;
+    Document parse(String systemId, InputStream inputStream, String encoding) throws IOException;
+
 }
