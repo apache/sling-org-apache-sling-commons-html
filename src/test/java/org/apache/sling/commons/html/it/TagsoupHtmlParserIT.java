@@ -50,7 +50,7 @@ public class TagsoupHtmlParserIT extends HtmlTestSupport {
         return new Option[]{
             this.baseConfiguration(),
             newConfiguration("org.apache.sling.commons.html.internal.TagsoupHtmlParser")
-                .put("parser.properties", "foo=true")
+                .put("parser.features", "foo=true")
                 .asOption(),
         };
     }
@@ -61,10 +61,10 @@ public class TagsoupHtmlParserIT extends HtmlTestSupport {
     }
 
     @Test
-    public void testConfiguration() throws IllegalAccessException {
-        @SuppressWarnings("unchecked") final Map<String, Boolean> properties = (Map<String, Boolean>) FieldUtils.readDeclaredField(htmlParser, "properties", true);
-        assertNotNull(properties);
-        final Boolean foo = properties.get("foo");
+    public void testFeaturesConfiguration() throws IllegalAccessException {
+        @SuppressWarnings("unchecked") final Map<String, Boolean> features = (Map<String, Boolean>) FieldUtils.readDeclaredField(htmlParser, "features", true);
+        assertNotNull(features);
+        final Boolean foo = features.get("foo");
         assertTrue(foo);
     }
 

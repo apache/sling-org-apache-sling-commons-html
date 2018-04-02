@@ -49,7 +49,7 @@ import org.xml.sax.ext.LexicalHandler;
 )
 public class TagsoupHtmlParser implements HtmlParser {
 
-    private Map<String, Boolean> properties = Collections.synchronizedMap(new LinkedHashMap<>());
+    private Map<String, Boolean> features = Collections.synchronizedMap(new LinkedHashMap<>());
 
     @Activate
     private void activate(final TagsoupHtmlParserConfiguration configuration) {
@@ -63,14 +63,14 @@ public class TagsoupHtmlParser implements HtmlParser {
 
     @Deactivate
     private void deactivate() {
-        properties.clear();
+        features.clear();
     }
 
     private void configure(final TagsoupHtmlParserConfiguration configuration) {
-        properties.clear();
-        final Map<String, String> map = PropertiesUtil.toMap(configuration.parser_properties(), new String[]{});
+        features.clear();
+        final Map<String, String> map = PropertiesUtil.toMap(configuration.parser_features(), new String[]{});
         for (final String key : map.keySet()) {
-            properties.put(key, Boolean.valueOf(map.get(key)));
+            features.put(key, Boolean.valueOf(map.get(key)));
         }
     }
 
@@ -79,7 +79,7 @@ public class TagsoupHtmlParser implements HtmlParser {
      */
     @Override
     public void parse(final InputStream stream, final String encoding, final ContentHandler contentHandler) throws SAXException {
-        final Parser parser = buildParser(properties, contentHandler);
+        final Parser parser = buildParser(features, contentHandler);
         final InputSource source = new InputSource(stream);
         source.setEncoding(encoding);
         try {
@@ -101,7 +101,7 @@ public class TagsoupHtmlParser implements HtmlParser {
         source.setSystemId(systemId);
 
         try {
-            final Parser parser = buildParser(properties, builder);
+            final Parser parser = buildParser(features, builder);
             parser.parse(source);
         } catch (SAXException se) {
             if (se.getCause() instanceof IOException) {
@@ -112,14 +112,14 @@ public class TagsoupHtmlParser implements HtmlParser {
         return builder.getDocument();
     }
 
-    private Parser buildParser(final Map<String, Boolean> properties, final ContentHandler contentHandler) throws SAXException {
+    private Parser buildParser(final Map<String, Boolean> features, final ContentHandler contentHandler) throws SAXException {
         final Parser parser = new Parser();
         parser.setContentHandler(contentHandler);
         if (contentHandler instanceof LexicalHandler) {
             parser.setProperty("http://xml.org/sax/properties/lexical-handler", contentHandler);
         }
-        for (final String key : properties.keySet()) {
-            parser.setProperty(key, properties.get(key));
+        for (final String key : features.keySet()) {
+            parser.setFeature(key, features.get(key));
         }
         return parser;
     }

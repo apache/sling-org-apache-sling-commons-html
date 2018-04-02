@@ -28,9 +28,9 @@ import org.osgi.service.metatype.annotations.ObjectClassDefinition;
 @interface TagsoupHtmlParserConfiguration {
 
     @AttributeDefinition(
-        name = "parser properties",
-        description = "Additional properties to be applied to the underlying parser in the format of key=[true|false]"
+        name = "parser features",
+        description = "Turn features in the underlying parser on or off by setting featureID=[true|false]"
     )
-    String[] parser_properties() default {};
+    String[] parser_features() default {};
 
 }
