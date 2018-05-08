@@ -24,11 +24,11 @@
         <groupId>org.apache.sling</groupId>
         <artifactId>sling</artifactId>
         <version>33</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <artifactId>org.apache.sling.commons.html</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <name>Apache Sling Commons HTML Utilities</name>
     <description>
@@ -44,7 +44,8 @@
         <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-commons-html.git</connection>
         <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-commons-html.git</developerConnection>
         <url>https://gitbox.apache.org/repos/asf?p=sling-org-apache-sling-commons-html.git</url>
-    </scm>
+      <tag>org.apache.sling.commons.html-1.0.2</tag>
+  </scm>
 
     <build>
         <plugins>
