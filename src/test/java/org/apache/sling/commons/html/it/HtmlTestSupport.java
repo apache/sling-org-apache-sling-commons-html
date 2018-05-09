@@ -26,6 +26,8 @@ import static org.apache.sling.testing.paxexam.SlingVersionResolver.SLING_GROUP_
 import static org.ops4j.pax.exam.CoreOptions.composite;
 import static org.ops4j.pax.exam.CoreOptions.junitBundles;
 import static org.ops4j.pax.exam.CoreOptions.mavenBundle;
+import static org.ops4j.pax.exam.CoreOptions.systemProperty;
+import org.ops4j.pax.exam.util.PathUtils;
 
 public abstract class HtmlTestSupport extends TestSupport {
 
@@ -39,8 +41,19 @@ public abstract class HtmlTestSupport extends TestSupport {
             // testing
             mavenBundle().groupId("org.apache.servicemix.bundles").artifactId("org.apache.servicemix.bundles.hamcrest").versionAsInProject(),
             mavenBundle().groupId("org.apache.commons").artifactId("commons-lang3").versionAsInProject(),
-            junitBundles()
+            junitBundles(),
+            logging()
         );
     }
 
+    protected Option logging() {
+        final String filename = String.format("file:%s/src/test/resources/logback.xml", PathUtils.getBaseDir());
+        return composite(
+            systemProperty("logback.configurationFile").value(filename),
+            mavenBundle().groupId("org.slf4j").artifactId("slf4j-api").version("1.7.21"),
+            mavenBundle().groupId("org.slf4j").artifactId("jcl-over-slf4j").version("1.7.21"),
+            mavenBundle().groupId("ch.qos.logback").artifactId("logback-core").version("1.1.7"),
+            mavenBundle().groupId("ch.qos.logback").artifactId("logback-classic").version("1.1.7")
+        );
+    }
 }
