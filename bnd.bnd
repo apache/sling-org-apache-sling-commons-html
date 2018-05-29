@@ -8,15 +8,11 @@ Bundle-License: Apache License, Version 2.0
 
 Bundle-Vendor: The Apache Software Foundation
 
--baseline: *
-
 -exportcontents: ${packages;VERSIONED}
 
 -includeresource:\
   @tagsoup-*.jar!/org/ccil/cowan/tagsoup/*
 
 -removeheaders:\
-  Embed-Dependency,\
-  Embed-Transitive,\
   Include-Resource,\
   Private-Package
