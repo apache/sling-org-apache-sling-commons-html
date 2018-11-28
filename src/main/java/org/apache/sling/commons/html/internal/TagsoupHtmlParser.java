@@ -41,7 +41,8 @@ import org.xml.sax.ext.LexicalHandler;
 @Component(
     property = {
         "dom=tagsoup",
-        "sax=tagsoup"
+        "sax=tagsoup",
+        "api=4"
     }
 )
 @Designate(

@@ -17,6 +17,6 @@
  * under the License.
  */
 @Version("1.1.0")
-package org.apache.sling.commons.html;
+package org.apache.sling.commons.html.util;
 
 import org.osgi.annotation.versioning.Version;
