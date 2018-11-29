@@ -66,10 +66,6 @@ public class HtmlSAXSupport implements Consumer<HtmlElement> {
             case START_TAG:
                 lexicalHandler.startEntity(value);
                 contentHandler.startElement("", value, value, HtmlSAXSupport.convert(element.getAttributes()));
-                if (element.getVoidTag()) {
-                    lexicalHandler.endEntity(value);
-                    contentHandler.endElement("", value, value);
-                }
                 break;
             case TEXT:
                 contentHandler.characters(value.toCharArray(), 0, value.toCharArray().length);
