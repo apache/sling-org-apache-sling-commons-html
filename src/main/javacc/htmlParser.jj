@@ -119,9 +119,9 @@ PARSER_END(TagParser)
 }
 
 
-Element element() :
+HtmlElement element() :
 {
-  Element e;
+  HtmlElement e;
   Token text;
 }
 {
@@ -168,7 +168,7 @@ Map<String,AttrValue> attributeList() :
 }
 
 
-Element tag() :
+HtmlElement tag() :
 {
   Token t, et;
   Map<String,AttrValue> alist;
@@ -188,7 +188,7 @@ Element tag() :
 }
 
 /** @return the end of a tag */
-Element endHtmlElement() :
+HtmlElement endHtmlElement() :
 {
   Token t;
   Token firstToken = getToken(1);
@@ -215,7 +215,7 @@ Comment commentHtmlElement() :
 }
 
 /** @return the start of a DECLARATION */
-Element decltag() :
+HtmlElement decltag() :
 {
   Token tok = null;
   Map<String,AttrValue > alist = new HashMap<String,AttrValue>();
