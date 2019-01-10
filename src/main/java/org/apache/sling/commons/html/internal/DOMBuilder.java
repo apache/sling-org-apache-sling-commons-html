@@ -53,7 +53,7 @@ public class DOMBuilder implements ContentHandler, LexicalHandler {
      *
      * @throws IOException If for some reason the <code>TransformerHandler</code> cannot be created.
      */
-    DOMBuilder() throws IOException {
+    public DOMBuilder() throws IOException {
         try {
             final TransformerHandler handler = FACTORY.newTransformerHandler();
             this.contentHandler = handler;
