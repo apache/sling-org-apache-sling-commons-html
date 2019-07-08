@@ -14,10 +14,13 @@ public class TagParser implements TagParserConstants {
     for (t=first; t != cur.next; t = t.next) {
       if (t.specialToken != null) {
         Token tt=t.specialToken;
-        while (tt.specialToken != null)
+        while (tt.specialToken != null) {
           tt = tt.specialToken;
-        for (; tt != null; tt = tt.next)
+        }
+        while (tt != null) {
           sb.append(tt.image);
+          tt = tt.next;
+        }
       };
       sb.append(t.image);
     };

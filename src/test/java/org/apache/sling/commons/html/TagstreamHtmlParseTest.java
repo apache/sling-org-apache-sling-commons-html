@@ -18,8 +18,10 @@
 package org.apache.sling.commons.html;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
 import java.util.function.Function;
@@ -29,6 +31,7 @@ import org.apache.sling.commons.html.internal.TagstreamHtmlParser;
 import org.apache.sling.commons.html.util.HtmlSAXSupport;
 import org.junit.Before;
 import org.junit.Test;
+import org.w3c.dom.Document;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.ext.DefaultHandler2;
@@ -43,11 +46,11 @@ public class TagstreamHtmlParseTest {
     private HtmlParser htmlParser;
 
     /*
-     * Japanese (google) translation of 'Don't forget me this weekend!' 
-     * standard text of xml sample note.xml
+     * Japanese (google) translation of 'Don't forget me this weekend!' standard
+     * text of xml sample note.xml
      */
-    private static final String MESSAGE ="この週末私を忘れないで!";
-    
+    private static final String MESSAGE = "この週末私を忘れないで!";
+
     @Before
     public void setUp() throws ParseException, Exception {
         InputStream is = this.getClass().getResourceAsStream("/demo.html");
@@ -79,7 +82,7 @@ public class TagstreamHtmlParseTest {
             @Override
             public void startElement(String uri, String localName, String qName, Attributes attributes)
                     throws SAXException {
-                //System.out.println(localName);
+                // System.out.println(localName);
             }
 
         }, new DefaultHandler2());
@@ -90,7 +93,7 @@ public class TagstreamHtmlParseTest {
     public void docParseTagTest3() throws Exception {
         long count = stream.flatMap(TagMapper.map((element, process) -> {
             if (element.containsAttribute("href")) {
-                //System.out.println(element.getAttributeValue("href"));
+                // System.out.println(element.getAttributeValue("href"));
                 process.next(element);
             }
         })).count();
@@ -121,10 +124,9 @@ public class TagstreamHtmlParseTest {
 
     @Test
     public void convertLinkAndPrintTest() throws Exception {
-        //stream.flatMap(CONVERT_LINKS).map(HtmlStreams.TO_HTML).forEach(System.out::print);
+        // stream.flatMap(CONVERT_LINKS).map(HtmlStreams.TO_HTML).forEach(System.out::print);
     }
 
-    
     @Before
     public void setup() {
 
@@ -142,7 +144,13 @@ public class TagstreamHtmlParseTest {
             }
         });
     }
-    
+
+    @Test
+    public void testDomSupport() throws SAXException, IOException {
+        Document dom = htmlParser.parse("123456", inputStream, "UTF-8");
+        assertNotEquals(dom, null);
+    }
+
     @Test
     public void testEncodingSupportFailure() throws SAXException {
         htmlParser.parse(inputStream, "ISO8859-1", new DefaultHandler() {

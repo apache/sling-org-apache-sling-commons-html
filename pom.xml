@@ -28,7 +28,7 @@
     </parent>
 
     <artifactId>org.apache.sling.commons.html</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>1.2.0-SNAPSHOT</version>
 
     <name>Apache Sling Commons HTML Utilities</name>
     <description>
