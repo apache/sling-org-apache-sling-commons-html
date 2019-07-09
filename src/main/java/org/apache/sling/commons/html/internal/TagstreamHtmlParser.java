@@ -52,7 +52,10 @@ public class TagstreamHtmlParser implements HtmlParser {
     @Override
     public Document parse(String systemId, InputStream stream, String encoding) throws IOException {
         final DOMBuilder builder = new DOMBuilder();
-        Html.stream(stream, encoding).forEach(new HtmlSAXSupport(builder, builder));
+        HtmlSAXSupport support = new HtmlSAXSupport(builder, builder);
+        support.startDocument();
+        Html.stream(stream, encoding).forEach(support);
+        support.endDocument();
         return builder.getDocument();
     }
 

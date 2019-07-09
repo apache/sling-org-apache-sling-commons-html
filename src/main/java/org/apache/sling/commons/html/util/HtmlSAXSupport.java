@@ -13,6 +13,7 @@
  */
 package org.apache.sling.commons.html.util;
 
+import java.io.IOException;
 import java.util.Map;
 import java.util.function.Consumer;
 
@@ -25,19 +26,23 @@ import org.xml.sax.ext.Attributes2Impl;
 import org.xml.sax.ext.DefaultHandler2;
 import org.xml.sax.ext.LexicalHandler;
 
+/**
+ * Utility Class for the TagstreamHTMLParser to generate SAX events
+ * 
+ *
+ */
 public class HtmlSAXSupport implements Consumer<HtmlElement> {
-    
+
     private static final DefaultHandler2 handler = new DefaultHandler2();
-    
+
     private ContentHandler contentHandler = handler;
     private LexicalHandler lexicalHandler = handler;
-    private boolean initialized;
 
     public HtmlSAXSupport(ContentHandler ch, final LexicalHandler lh) {
         if (ch != null) {
             contentHandler = ch;
         }
-        if (lh != null ) {
+        if (lh != null) {
             lexicalHandler = lh;
         }
     }
@@ -45,10 +50,6 @@ public class HtmlSAXSupport implements Consumer<HtmlElement> {
     @Override
     public void accept(HtmlElement element) {
         try {
-            if (!initialized) {
-                contentHandler.startDocument();
-                initialized = true;
-            }
             String value = element.getValue();
             switch (element.getType()) {
             case COMMENT:
@@ -64,6 +65,12 @@ public class HtmlSAXSupport implements Consumer<HtmlElement> {
                 contentHandler.endDocument();
                 break;
             case START_TAG:
+                if (value.startsWith("?")) {
+                    if (!value.equalsIgnoreCase("?xml")) {
+                        contentHandler.processingInstruction(value, attrsToString(element.getAttributes()));
+                    }
+                    break;
+                }
                 lexicalHandler.startEntity(value);
                 contentHandler.startElement("", value, value, HtmlSAXSupport.convert(element.getAttributes()));
                 break;
@@ -74,17 +81,38 @@ public class HtmlSAXSupport implements Consumer<HtmlElement> {
                 break;
             }
         } catch (SAXException se) {
-            //log message
+            //se.printStackTrace();
         }
 
     }
-    
-    public static Attributes convert(Map<String,AttrValue> attributes) {
+
+    public static Attributes convert(Map<String, AttrValue> attributes) {
         Attributes2Impl response = new Attributes2Impl();
-        attributes.entrySet().forEach(attr ->
-            response.addAttribute("",attr.getKey(), attr.getKey(), "xsi:String", attr.getValue().toString())
-        );
+        attributes.entrySet().forEach(attr -> response.addAttribute("", attr.getKey(), attr.getKey(), "xsi:String",
+                attr.getValue().toString()));
         return response;
+    }
+
+    public void startDocument() throws IOException {
+        try {
+            contentHandler.startDocument();
+        } catch (SAXException e) {
+            throw new IOException(e);
+        }
+    }
+
+    public void endDocument() throws IOException {
+        try {
+            contentHandler.endDocument();
+        } catch (SAXException e) {
+            throw new IOException(e);
+        }
+    }
+    
+    private String attrsToString(Map<String, AttrValue> attributes) {
+        StringBuilder sb = new StringBuilder();
+        attributes.entrySet().forEach(attr -> sb.append(attr.toString()));
+        return sb.toString();
     }
 
 }
