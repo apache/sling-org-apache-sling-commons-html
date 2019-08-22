@@ -15,6 +15,7 @@ package org.apache.sling.commons.html.impl.tag;
 
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -30,6 +31,10 @@ public class StartTag implements HtmlElement {
     private static List<String> voidTags = Arrays.asList("area", "base", "br", "col", "embed", "hr", "img", "input",
             "link", "meta", "param", "source", "track", "wbr");
 
+    public StartTag(String value) {
+        this(value, null, voidTags.contains(value));
+    }
+    
     public StartTag(String value, Map<String, AttrValue> attrList) {
         this(value, attrList, voidTags.contains(value));
     }
@@ -37,7 +42,11 @@ public class StartTag implements HtmlElement {
     public StartTag(String value, Map<String, AttrValue> attrList, boolean selfClosing) {
         this.value = value;
         this.selfClosing = selfClosing;
+        if (attrList == null) {
+            attrList = new HashMap<>();
+        }
         attributes = attrList;
+
     }
 
     @Override
@@ -55,6 +64,7 @@ public class StartTag implements HtmlElement {
         return true;
     }
 
+    @Override
     public boolean getVoidTag() {
         return selfClosing;
     }

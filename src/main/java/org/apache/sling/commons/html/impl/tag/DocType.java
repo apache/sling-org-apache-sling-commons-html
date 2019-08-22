@@ -13,6 +13,7 @@
  */
 package org.apache.sling.commons.html.impl.tag; 
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.sling.commons.html.AttrValue;
@@ -29,6 +30,12 @@ public class DocType implements HtmlElement {
         this.attributes = attrList;
     }
     
+    public DocType(String text) {
+       this.value = "!DOCTYPE";
+       this.attributes = new HashMap<>();
+       this.attributes.put(text, new AttrValue());
+    }
+
     @Override
     public HtmlElementType getType() {
         return HtmlElementType.DOCTYPE;

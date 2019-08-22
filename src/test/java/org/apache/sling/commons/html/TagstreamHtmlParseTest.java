@@ -24,10 +24,12 @@ import static org.junit.Assert.assertTrue;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.ParseException;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
 import org.apache.sling.commons.html.internal.TagstreamHtmlParser;
+import org.apache.sling.commons.html.util.HtmlElements;
 import org.apache.sling.commons.html.util.HtmlSAXSupport;
 import org.junit.Before;
 import org.junit.Test;
@@ -60,40 +62,49 @@ public class TagstreamHtmlParseTest {
     }
 
     @Test
-    public void docParseTagTest() throws Exception {
+    public void parseDocAndCountStartTags() throws Exception {
         long count = stream.filter(elem -> elem.getType() == HtmlElementType.START_TAG).count();
         assertEquals(902, count);
     }
+    
+    @Test
+    public void parseDocumentConvertBackToHtml() throws Exception {
+        String content = stream.collect(HtmlElements.elementsToHtml());
+        assertEquals(62062, content.length());
+    }
+
 
     @Test
-    public void docParseAllTest() throws Exception {
+    public void parseDocumentAndCountElements() throws Exception {
         long count = stream.count();
         assertEquals(2928, count);
     }
 
     @Test
-    public void docParseAllTestToString() throws Exception {
-        stream.map(HtmlStreams.TO_HTML).count();
+    public void parseDocConvertToStringsAndCount() throws Exception {
+        assertEquals(2928, stream.map(HtmlElements.TO_HTML).count());
     }
 
     @Test
-    public void docParseSAXTest() {
+    public void parseDocAndUseSaxToCountStartTags() {
+        final AtomicInteger count = new AtomicInteger();
         HtmlSAXSupport support = new HtmlSAXSupport(new DefaultHandler2() {
+            
             @Override
             public void startElement(String uri, String localName, String qName, Attributes attributes)
                     throws SAXException {
-                // System.out.println(localName);
+                count.incrementAndGet();
             }
 
         }, new DefaultHandler2());
         stream.forEach(support);
+        assertEquals(902, count.get());
     }
 
     @Test
-    public void docParseTagTest3() throws Exception {
+    public void parseDocFilterOnHrefUsingMapper() throws Exception {
         long count = stream.flatMap(TagMapper.map((element, process) -> {
             if (element.containsAttribute("href")) {
-                // System.out.println(element.getAttributeValue("href"));
                 process.next(element);
             }
         })).count();
