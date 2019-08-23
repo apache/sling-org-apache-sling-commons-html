@@ -31,7 +31,7 @@ public class DocType implements HtmlElement {
     }
     
     public DocType(String text) {
-       this.value = "!DOCTYPE";
+       this.value = "DOCTYPE";
        this.attributes = new HashMap<>();
        this.attributes.put(text, new AttrValue());
     }

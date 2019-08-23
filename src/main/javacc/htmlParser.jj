@@ -228,7 +228,7 @@ HtmlElement decltag() :
   try {
     <DECL_START> tok=<DECL_TAG> (< DECL_ATTR > { alist.put(token.image,new AttrValue()); })* <DECL_END>
     {
-      return new StartTag(tok.image, alist); 
+      return new DocType(tok.image, alist); 
     }
   } catch (ParseException ex) {
     token_source.SwitchTo(DEFAULT); 

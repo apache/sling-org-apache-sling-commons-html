@@ -93,6 +93,19 @@ public class HtmlElements implements Collector<HtmlElement, HtmlElements, String
         case DOCTYPE:
             buffer.append("<!");
             buffer.append(element.getValue());
+            if (element.hasAttributes()) {
+                buffer.append(' ');
+                buffer.append(element.getAttributes().entrySet().stream().map(entry -> {
+                    StringBuilder sb2 = new StringBuilder();
+                    sb2.append(entry.getKey());
+                    AttrValue value = entry.getValue();
+                    if (!value.isEmpty()) {
+                        sb2.append("=");
+                        sb2.append(value.quoteIfNeeded());
+                    } 
+                    return sb2.toString();
+                }).collect(Collectors.joining(" ")));
+            }
             buffer.append(">");
             break;
         case END_TAG:

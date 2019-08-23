@@ -213,7 +213,7 @@ public class TagParser implements TagParserConstants {
                                                  alist.put(token.image,new AttrValue());
       }
       jj_consume_token(DECL_END);
-      {if (true) return new StartTag(tok.image, alist);}
+      {if (true) return new DocType(tok.image, alist);}
     } catch (ParseException ex) {
     token_source.SwitchTo(DEFAULT);
     String s = getTokenHtmlText(firstToken, getNextToken());

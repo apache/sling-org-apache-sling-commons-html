@@ -64,13 +64,13 @@ public class TagstreamHtmlParseTest {
     @Test
     public void parseDocAndCountStartTags() throws Exception {
         long count = stream.filter(elem -> elem.getType() == HtmlElementType.START_TAG).count();
-        assertEquals(902, count);
+        assertEquals(901, count);
     }
     
     @Test
     public void parseDocumentConvertBackToHtml() throws Exception {
         String content = stream.collect(HtmlElements.elementsToHtml());
-        assertEquals(62062, content.length());
+        assertEquals(62063, content.length());
     }
 
 
@@ -98,7 +98,7 @@ public class TagstreamHtmlParseTest {
 
         }, new DefaultHandler2());
         stream.forEach(support);
-        assertEquals(902, count.get());
+        assertEquals(901, count.get());
     }
 
     @Test
@@ -135,7 +135,7 @@ public class TagstreamHtmlParseTest {
 
     @Test
     public void convertLinkAndPrintTest() throws Exception {
-        // stream.flatMap(CONVERT_LINKS).map(HtmlStreams.TO_HTML).forEach(System.out::print);
+        stream.flatMap(CONVERT_LINKS).map(HtmlElements.TO_HTML).forEach(System.out::print);
     }
 
     @Before
