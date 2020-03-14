@@ -21,6 +21,8 @@ package org.apache.sling.commons.html.it;
 import org.apache.sling.testing.paxexam.TestSupport;
 import org.ops4j.pax.exam.options.ModifiableCompositeOption;
 
+import static org.apache.sling.testing.paxexam.SlingOptions.config;
+import static org.apache.sling.testing.paxexam.SlingOptions.eventadmin;
 import static org.apache.sling.testing.paxexam.SlingOptions.logback;
 import static org.apache.sling.testing.paxexam.SlingOptions.scr;
 import static org.apache.sling.testing.paxexam.SlingVersionResolver.SLING_GROUP_ID;
@@ -36,12 +38,13 @@ public abstract class HtmlTestSupport extends TestSupport {
             // Sling Commons HTML
             testBundle("bundle.filename"),
             mavenBundle().groupId(SLING_GROUP_ID).artifactId("org.apache.sling.commons.osgi").versionAsInProject(),
+            config(),
+            eventadmin(),
             scr(),
             // testing
             mavenBundle().groupId("org.apache.servicemix.bundles").artifactId("org.apache.servicemix.bundles.hamcrest").versionAsInProject(),
             mavenBundle().groupId("org.apache.commons").artifactId("commons-lang3").versionAsInProject(),
-            junitBundles(),
-            logback()
+            junitBundles()
         );
     }
 
