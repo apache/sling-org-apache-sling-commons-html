@@ -23,7 +23,7 @@
     <parent>
         <groupId>org.apache.sling</groupId>
         <artifactId>sling-bundle-parent</artifactId>
-        <version>35</version>
+        <version>38</version>
         <relativePath />
     </parent>
 
@@ -38,12 +38,13 @@
     <properties>
         <org.ops4j.pax.exam.version>4.13.1</org.ops4j.pax.exam.version>
     </properties>
+
     <scm>
         <connection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-commons-html.git</connection>
         <developerConnection>scm:git:https://gitbox.apache.org/repos/asf/sling-org-apache-sling-commons-html.git</developerConnection>
         <url>https://gitbox.apache.org/repos/asf?p=sling-org-apache-sling-commons-html.git</url>
-      <tag>HEAD</tag>
-  </scm>
+        <tag>HEAD</tag>
+    </scm>
 
     <build>
         <plugins>
@@ -212,4 +213,5 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
 </project>
